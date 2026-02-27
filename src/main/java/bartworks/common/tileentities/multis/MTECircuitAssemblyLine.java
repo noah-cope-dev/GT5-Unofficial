@@ -277,18 +277,27 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     private boolean imprintMachine(ItemStack itemStack) {
         if (isImprinted()) return true;
-        if (isValidImprint(itemStack)) {
-            this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(itemStack.getItemDamage());
+        if (!isValidImprint(itemStack)) return false;
 
-            itemStack.stackSize -= 1;
-            if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
-                mInventory[getControllerSlotIndex()] = null;
-            }
-            this.getBaseMetaTileEntity()
-                .issueBlockUpdate();
-            return true;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return false; // the machines not attached
+
+        if (base.isClientSide()) return true;
+
+        CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(itemStack.getItemDamage());
+        if (this.circuitImprint == null) return false;
+
+        this.circuitImprint = imprint;
+
+        itemStack.stackSize -= 1;
+        if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
+            mInventory[getControllerSlotIndex()] = null;
         }
-        return false;
+
+        // persist + sync
+        base.markDirty(); // mark for save
+        base.issueBlockUpdate();
+        return true;
     }
 
     @Override
