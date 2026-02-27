@@ -30,7 +30,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 import static gregtech.api.util.GTUtility.validMTEList;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -276,7 +276,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     private boolean imprintMachine(ItemStack itemStack) {
-        if(isImprinted()) return true;
+        if (isImprinted()) return true;
         if (!isValidImprint(itemStack)) return false;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -299,7 +299,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         base.issueBlockUpdate();
         return true;
     }
-
 
     @Override
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
@@ -382,7 +381,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(BartWorksRecipeMaps.circuitAssemblyLineRecipes, RecipeMaps.circuitAssemblerRecipes);
     }
-
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
